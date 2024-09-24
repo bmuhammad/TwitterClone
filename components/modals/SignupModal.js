@@ -1,10 +1,59 @@
 import { closeSignupModal, openSignupModal } from "@/redux/modalSlice";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  updateProfile,
+} from "firebase/auth";
+import { useEffect, useState } from "react";
+import { auth } from "@/firebase";
+import { setUser } from "@/redux/userSlice";
+import { useRouter } from "next/router";
 
 export default function SignupModal() {
   const isOpen = useSelector((state) => state.modals.signupModalOpen);
   const dispatch = useDispatch();
+
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("")
+  const [password, setPassword] = useState("");
+
+  const router = useRouter();
+
+  async function handleSignUp() {
+    const userCredentials = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    await updateProfile(auth.currentUser, {
+      displayName: name,
+     photoURL: `./assets/profilePictures/pfp${Math.ceil(Math.random() * 6)}.png`
+   
+    })
+
+    router.reload()
+   
+  }
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (!currentUser) return;
+      dispatch(
+        setUser({
+          username: currentUser.email.split("@")[0],
+          name: currentUser.displayName,
+          email: currentUser.email,
+          uid: currentUser.uid,
+          photoUrl: currentUser.photoURL,
+        })
+      );
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <>
       <button
@@ -35,18 +84,24 @@ export default function SignupModal() {
               placeholder="Full Name"
               className="h-10 mt-8 rounded-md bg-transparent border border-gray-700 p-6"
               type={"text"}
+              onChange={(e) => setName(e.target.value)}
             />
             <input
               placeholder="Email"
               className="h-10 mt-8 rounded-md bg-transparent border border-gray-700 p-6"
               type={"email"}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <input
               placeholder="Password"
               className="h-10 mt-8 rounded-md bg-transparent border border-gray-700 p-6"
               type={"password"}
+              onChange={(e) => setPassword(e.target.value)}
             />
-            <button className="bg-white text-black w-full font-bold text-lg p-2  mt-8 rounded-md">
+            <button
+              className="bg-white text-black w-full font-bold text-lg p-2  mt-8 rounded-md"
+              onClick={handleSignUp}
+            >
               Create Account
             </button>
           </div>
