@@ -13,6 +13,7 @@ import {
   DotsCircleHorizontalIcon,
   DotsHorizontalIcon,
 } from "@heroicons/react/outline";
+import { closeLoginModal, closeSignupModal } from "@/redux/modalSlice";
 
 export default function Sidebar() {
   const dispatch = useDispatch();
@@ -21,6 +22,8 @@ export default function Sidebar() {
   async function handleSignOut() {
     await signOut(auth);
     dispatch(signOutUser());
+    dispatch(closeSignupModal())
+    dispatch(closeLoginModal())
   }
 
   return (
