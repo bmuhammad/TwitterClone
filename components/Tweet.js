@@ -1,3 +1,4 @@
+import { db } from "@/firebase";
 import { openCommentModal, setCommentTweet } from "@/redux/modalSlice";
 import {
   ChartBarIcon,
@@ -5,17 +6,54 @@ import {
   HeartIcon,
   UploadIcon,
 } from "@heroicons/react/outline";
+import { HeartIcon as FilledHeartIcon } from "@heroicons/react/outline";
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Tweet({ data, id }) {
   const dispatch = useDispatch();
-  const router = useRouter()
+  const router = useRouter();
+  const user = useSelector((state) => state.user);
+  const [likes, setLikes] = useState([]);
+  const [comments, setComments] = useState([]);
+
+  async function likeComment(e) {
+    e.stopPropagation();
+
+    if (likes.includes(user.uid)) {
+      await updateDoc(doc(db, "posts", id), {
+        likes: arrayRemove(user.uid),
+      });
+    } else {
+      await updateDoc(doc(db, "posts", id), {
+        likes: arrayUnion(user.uid),
+      });
+    }
+  }
+
+  useEffect(() => {
+    if (!id) return;
+    const unsubscribe = onSnapshot(doc(db, "posts", id), (doc) => {
+      setLikes(doc.data().likes);
+      setComments(doc.data().comments);
+    });
+    return unsubscribe;
+  }, []);
+
   return (
-    <div 
-    onClick={() => router.push("/"+  id)}
-    className="border-b border-gray-700 cursor-pointer">
+    <div
+      onClick={() => router.push("/" + id)}
+      className="border-b border-gray-700 cursor-pointer"
+    >
       <TweetHeader
         username={data?.username}
         name={data?.name}
@@ -24,9 +62,9 @@ export default function Tweet({ data, id }) {
         photoUrl={data?.photoUrl}
       />
       <div className="p-3 ml-16 text-gray-500 flex space-x-14">
-        <div
+        <div   className="flex justify-center items-center space-x-2"
           onClick={(e) => {
-            e.stopPropagation()
+            e.stopPropagation();
             dispatch(
               setCommentTweet({
                 id: id,
@@ -40,9 +78,20 @@ export default function Tweet({ data, id }) {
           }}
         >
           <ChatIcon className="w-5 cursor-pointer hover:text-green-400" />
+          {comments?.length > 0 && <span>{comments.length}</span>}
+        </div>
+        <div
+          className="flex justify-center items-center space-x-2"
+          onClick={likeComment}
+        >
+          {likes.includes(user.uid) ? (
+            <FilledHeartIcon className="w-5 text-pink-500" />
+          ) : (
+            <HeartIcon className="w-5 cursor-pointer hover:text-pink-500" />
+          )}
+          {likes.length > 0 && <span>{likes.length}</span>}
         </div>
 
-        <HeartIcon className="w-5 cursor-pointer hover:text-pink-500" />
         <ChartBarIcon className="w-5 cursor-not-allowed" />
         <UploadIcon className="w-5 cursor-not-allowed" />
       </div>
