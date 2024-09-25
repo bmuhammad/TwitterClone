@@ -14,9 +14,9 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
         (state.username = action.payload.username),
-        (state.name = action.payload.username),
-        (state.email = action.payload.username),
-        (state.uid = action.payload.username),
+        (state.name = action.payload.name),
+        (state.email = action.payload.email),
+        (state.uid = action.payload.uid),
         (state.photoUrl = action.payload.photoUrl);
     },
     signOutUser: (state) => {
