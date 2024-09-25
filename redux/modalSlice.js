@@ -50,6 +50,7 @@ export const {
   openSignupModal,
   closeSignupModal,
   openLoginModal,
+  closeLoginModal,
   openCommentModal,
   closeCommentModal,
   setCommentTweet
