@@ -51,14 +51,14 @@ export default function Trending() {
           <div className="flex space-x-3">
             <img
               className="e-11 h-11 object-cover rounded-full"
-              src="/assets/bragg.png"
+              src="/assets/johnnysokko.jpg"
             />
             <div>
               <div className="flex space-x-1">
-                <h1>David Bragg</h1>
+                <h1>Johnny Sokko</h1>
                 <BadgeCheckIcon className="w-[18px] text-blue-400" />
               </div>
-              <h1 className="text-[12px] mt-1 text-gray-500">@davidbragg</h1>
+              <h1 className="text-[12px] mt-1 text-gray-500">@jsokko</h1>
             </div>
           </div>
           <button className="bg-white text-black text-sm w-20 rounded-3xl font-bold">Follow</button>
@@ -67,14 +67,14 @@ export default function Trending() {
           <div className="flex space-x-3">
             <img
               className="e-11 h-11 object-cover rounded-full"
-              src="/assets/bragg.png"
+              src="/assets/johnnysokko.jpg"
             />
             <div>
               <div className="flex space-x-1">
-                <h1>David Bragg</h1>
+                <h1>Johnny Sokko</h1>
                 <BadgeCheckIcon className="w-[18px] text-blue-400" />
               </div>
-              <h1 className="text-[12px] mt-1 text-gray-500">@davidbragg</h1>
+              <h1 className="text-[12px] mt-1 text-gray-500">@jsokko</h1>
             </div>
           </div>
           <button className="bg-white text-black text-sm w-20 rounded-3xl font-bold">Follow</button>
@@ -83,14 +83,14 @@ export default function Trending() {
           <div className="flex space-x-3">
             <img
               className="e-11 h-11 object-cover rounded-full"
-              src="/assets/bragg.png"
+               src="/assets/johnnysokko.jpg"
             />
             <div>
               <div className="flex space-x-1">
                 <h1>David Bragg</h1>
                 <BadgeCheckIcon className="w-[18px] text-blue-400" />
               </div>
-              <h1 className="text-[12px] mt-1 text-gray-500">@davidbragg</h1>
+              <h1 className="text-[12px] mt-1 text-gray-500">@jsokko</h1>
             </div>
           </div>
           <button className="bg-white text-black text-sm w-20 rounded-3xl font-bold">Follow</button>
