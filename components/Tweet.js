@@ -4,6 +4,7 @@ import {
   HeartIcon,
   UploadIcon,
 } from "@heroicons/react/outline";
+import moment from "moment";
 
 export default function Tweet({ data }) {
   return (
@@ -11,7 +12,7 @@ export default function Tweet({ data }) {
       <TweetHeader
         username={data?.username}
         name={data?.name}
-      //  timestamp={data?.timestamp}
+        timestamp={moment(data?.timestamp?.toDate()).fromNow()}
         text={data?.tweet}
         photoUrl={data?.photoUrl}
       />
@@ -28,16 +29,13 @@ export default function Tweet({ data }) {
 export function TweetHeader({ username, name, timestamp, text, photoUrl }) {
   return (
     <div className="flex space-x-3 p-3 border-gray-700">
-      <img
-        className="w-11 h-11 rounded-full object-cover"
-        src={photoUrl}
-      />
+      <img className="w-11 h-11 rounded-full object-cover" src={photoUrl} />
       <div>
         <div className="text-gray-500 flex items-center space-x-2 mb-1">
           <h1 className="text-white font-bold">{name}</h1>
           <span>@{username}</span>
           <div className="w-1 h-1 bg-gray-500 rounded-full "></div>
-          <span>{timestamp}</span>
+          <span> {timestamp}</span>
         </div>
         <span>{text}</span>
       </div>
